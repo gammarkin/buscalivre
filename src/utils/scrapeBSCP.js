@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-const BSCP_ENDPOINT = (search) => `https://www.buscape.com.br/search?q=${search}`;
+export const BSCP_ENDPOINT = (search) => `https://www.buscape.com.br/search?q=${search}`;
 
 const scrapeBuscape = async (url) => {
     try {
@@ -31,3 +31,5 @@ const scrapeBuscape = async (url) => {
         return null;
     }
 };
+
+export default scrapeBuscape;
