@@ -15,12 +15,13 @@ const scrapeML = async (url) => {
 
             elements.forEach((element) => {
                 const name = element.querySelector('.ui-search-item__title').innerText;
-                const priceFraction = element.querySelector('.price-tag-fraction').innerText;
+                const img = element.querySelector('img').src;
 
+                const priceFraction = element.querySelector('.price-tag-fraction').innerText;
                 const priceCents = element.querySelector('.price-tag-cents');
                 const price = priceCents ? `${priceFraction},${priceCents.innerText}` : priceFraction;
 
-                items.push({ name, price, category, from: 'Mercado Livre' });
+                items.push({ name, price, category, img, from: 'Mercado Livre' });
             });
 
             return items;

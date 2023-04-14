@@ -1,5 +1,6 @@
 import { model as mongooseCreateModel, Schema } from 'mongoose';
 import scrapeML, { ML_ENDPOINT } from '../../utils/scrapeML.js';
+import scrapeBSCP, { BSCP_ENDPOINT } from '../../utils/scrapeBSCP.js';
 
 const ProductsSchema = new Schema(
     {
@@ -7,7 +8,7 @@ const ProductsSchema = new Schema(
         from: { type: String },
         price: { type: String },
         category: { type: String },
-        description: { type: String },
+        img: { type: String },
     },
     { versionKey: false }
 );
@@ -16,10 +17,13 @@ const model = mongooseCreateModel('products', ProductsSchema);
 
 const read = async () => {
     const results = await model.find({});
-    const ENDPOINT = ML_ENDPOINT('notebook');
+    const ENDPOINT_BSCP = BSCP_ENDPOINT('Geladeiras');
+    const ENDPOINT_ML = ML_ENDPOINT('Geladeiras');
 
     if (!results || results.length === 0) {
-        const data = await scrapeML(ENDPOINT);
+        let data = await scrapeML(ENDPOINT_ML);
+        data = data.concat(await scrapeBSCP(ENDPOINT_BSCP));
+
         await model.insertMany(data);
 
         return await model.find({});
@@ -32,7 +36,28 @@ const createMany = async (obj) => {
     return model.insertMany(obj);
 };
 
+const destroyAll = async () => {
+    return model.deleteMany({});
+};
+
+const readSpecific = async (category) => {
+    const ENDPOINT_BSCP = BSCP_ENDPOINT(category);
+    const ENDPOINT_ML = ML_ENDPOINT(category);
+
+    let data = await scrapeML(ENDPOINT_ML);
+    const dataBSCP = await scrapeBSCP(ENDPOINT_BSCP);
+
+    data = data.concat(dataBSCP);
+
+    await model.deleteMany({});
+    await model.insertMany(data);
+
+    return data
+}
+
 export default {
     read,
     createMany,
+    destroyAll,
+    readSpecific,
 };

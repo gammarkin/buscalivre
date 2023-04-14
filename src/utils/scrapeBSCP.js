@@ -16,8 +16,9 @@ const scrapeBuscape = async (url) => {
             elements.forEach((element) => {
                 const name = element.querySelector('.SearchCard_ProductCard_Name__ZaO5o').innerText;
                 const price = element.querySelector('.Text_MobileHeadingS__Zxam2').innerText;
+                const img = element.querySelector('img').src;
 
-                items.push({ name, price, category, from: 'Buscapé' });
+                items.push({ name, price, category, img, from: 'Buscapé' });
             });
 
             return items;
