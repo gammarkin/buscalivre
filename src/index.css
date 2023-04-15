@@ -1,0 +1,60 @@
+header {
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+}
+
+select {
+	width: 7rem;
+	height: 2rem;
+	border: none;
+	border-radius: 5px;
+	padding: 0 10px;
+	font-size: 16px;
+	outline: none;
+	background-color: #223499;
+	color: white;
+	margin: 0 10px;
+}
+
+select option {
+	background-color: white;
+	color: #223499;
+}
+
+form input {
+	width: 14rem;
+	height: 2rem;
+	border: 1.5px solid #000000;
+	border-radius: 5px;
+	padding: 0 10px;
+	font-size: 16px;
+	outline: none;
+}
+
+form button {
+	height: 2rem;
+	border-radius: 5px;
+	padding: 0 30px;
+	font-size: 16px;
+	outline: none;
+	color: white;
+	background-color: #3753f1;
+	border: none;
+	margin: 0 10px;
+}
+
+img {
+	width: 20%;
+}
+
+section div {
+	margin: 5rem 2rem;
+	display: flex;
+}
+
+section div div {
+	margin: 2rem;
+	display: flex;
+	flex-direction: column;
+}

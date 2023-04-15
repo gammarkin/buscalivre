@@ -10,17 +10,23 @@ const scrapeML = async (url) => {
         await page.goto(url);
 
         const data = await page.$$eval('.ui-search-layout__item', (elements) => {
+            if (document.querySelector('.ui-search-rescue__info')) {
+                return [];
+            }
+
             const items = [];
-            const category = document.querySelector('.andes-breadcrumb__link').firstChild.innerText;
+            let category = document.querySelector('.andes-breadcrumb__link');
+            category = category ? category.firstChild.innerText : '';
 
             elements.forEach((element) => {
                 const name = element.querySelector('.ui-search-item__title').innerText;
-                const priceFraction = element.querySelector('.price-tag-fraction').innerText;
+                const img = element.querySelector('img').src;
 
+                const priceFraction = element.querySelector('.price-tag-fraction').innerText;
                 const priceCents = element.querySelector('.price-tag-cents');
                 const price = priceCents ? `${priceFraction},${priceCents.innerText}` : priceFraction;
 
-                items.push({ name, price, category, from: 'Mercado Livre' });
+                items.push({ name, price, category, img, from: 'Mercado Livre' });
             });
 
             return items;

@@ -4,13 +4,14 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"prestart": "node ./src/utils/scrape.js",
-		"start": "vite",
+		"server": "node ./src/api/index.js",
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"axios": "^1.3.5",
+		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"puppeteer": "^19.8.5",
 		"react": "^18.2.0",
@@ -20,6 +21,7 @@
 		"@types/react": "^18.0.28",
 		"@types/react-dom": "^18.0.11",
 		"@vitejs/plugin-react": "^3.1.0",
+		"express": "^4.18.2",
 		"mongoose": "^7.0.3",
 		"vite": "^4.2.0"
 	}
