@@ -4,6 +4,8 @@ import axios from 'axios';
 import Header from './components/Header';
 import Products from './components/Products';
 
+import './index.css';
+
 function App() {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
