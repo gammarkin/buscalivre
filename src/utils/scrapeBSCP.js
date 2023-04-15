@@ -11,6 +11,11 @@ const scrapeBuscape = async (url) => {
 
         const data = await page.$$eval('.SearchCard_ProductCard_Inner__7JhKb', (elements) => {
             const items = [];
+
+            if (!document.querySelector('.Text_MobileParagraphXs__sLf1r')) {
+                return [];
+            }
+
             const category = document.querySelector('.Text_MobileParagraphXs__sLf1r').innerText;
 
             elements.forEach((element) => {

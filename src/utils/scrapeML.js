@@ -10,8 +10,13 @@ const scrapeML = async (url) => {
         await page.goto(url);
 
         const data = await page.$$eval('.ui-search-layout__item', (elements) => {
+            if (document.querySelector('.ui-search-rescue__info')) {
+                return [];
+            }
+
             const items = [];
-            const category = document.querySelector('.andes-breadcrumb__link').firstChild.innerText;
+            let category = document.querySelector('.andes-breadcrumb__link');
+            category = category ? category.firstChild.innerText : '';
 
             elements.forEach((element) => {
                 const name = element.querySelector('.ui-search-item__title').innerText;

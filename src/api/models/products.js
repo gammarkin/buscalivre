@@ -22,7 +22,7 @@ const read = async () => {
 
     if (!results || results.length === 0) {
         let data = await scrapeML(ENDPOINT_ML);
-        data = data.concat(await scrapeBSCP(ENDPOINT_BSCP));
+        data = await scrapeBSCP(ENDPOINT_BSCP).concat(data);
 
         await model.insertMany(data);
 
@@ -47,7 +47,11 @@ const readSpecific = async (category) => {
     let data = await scrapeML(ENDPOINT_ML);
     const dataBSCP = await scrapeBSCP(ENDPOINT_BSCP);
 
-    data = data.concat(dataBSCP);
+    if (!data || !dataBSCP) {
+        return []
+    }
+
+    data = dataBSCP.concat(data);
 
     await model.deleteMany({});
     await model.insertMany(data);
