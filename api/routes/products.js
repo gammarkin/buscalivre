@@ -13,9 +13,9 @@ router.get(
 );
 
 router.get(
-	'/c/:c',
+	'/c/',
 	async (req, res) => {
-		const { params: { c } } = req;
+		const { body: { c } } = req;
 		const results = await products.readSpecific(c);
 
 		return res.status(200).json({ results });
