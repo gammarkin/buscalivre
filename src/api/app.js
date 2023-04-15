@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/', routes.Main);
-app.use('/products', routes.Products);
+app.use('/main', routes.Main);
+app.use('/', routes.Products);
 
 export default app;
