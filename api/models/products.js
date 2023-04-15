@@ -1,6 +1,6 @@
 import { model as mongooseCreateModel, Schema } from 'mongoose';
-import scrapeML, { ML_ENDPOINT } from '../../utils/scrapeML.js';
-import scrapeBSCP, { BSCP_ENDPOINT } from '../../utils/scrapeBSCP.js';
+import scrapeML, { ML_ENDPOINT } from '../utils/scrapeML.js';
+import scrapeBSCP, { BSCP_ENDPOINT } from '../utils/scrapeBSCP.js';
 
 const ProductsSchema = new Schema(
     {
