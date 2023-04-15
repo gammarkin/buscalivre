@@ -28,9 +28,7 @@ const handleOnChange = async (event, setProducts, setLoading) => {
 		return setProducts(filteredListBySite);
 	}
 
-	const data = await axios.get('https://buscalivre-api.vercel.app/c/', {
-		c: value,
-	});
+	const data = await axios.get(`https://buscalivre-api.vercel.app/c/${value}`);
 
 	setProducts(data.data.results);
 	return setLoading(false);
