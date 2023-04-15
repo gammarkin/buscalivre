@@ -11,13 +11,9 @@ function App() {
 	useEffect(() => {
 		const getProducts = async () => {
 			const data = await axios.get('http://localhost:3001/products');
-			const beginning = data.data.results.slice(126);
-			const productsArr = [...new Set(beginning.concat(data.data.results))];
 
-			setProducts(productsArr);
+			setProducts(data.data.results);
 			setLoading(false);
-
-			console.log(productsArr);
 		};
 
 		getProducts();

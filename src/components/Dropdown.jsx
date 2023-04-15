@@ -13,9 +13,7 @@ const handleOnChange = async (event, setProducts, setLoading) => {
 	if (value === 'Todos') {
 		const products = await axios.get(`http://localhost:3001/products/`);
 
-		console.log(products.data.results, 'drop');
 		setLoading(false);
-
 		return setProducts(products.data.results);
 	}
 
@@ -25,8 +23,6 @@ const handleOnChange = async (event, setProducts, setLoading) => {
 		const filteredListBySite = products.data.results.filter(
 			(product) => product.from === value
 		);
-
-		console.log(filteredListBySite, 'drop');
 
 		setLoading(false);
 		return setProducts(filteredListBySite);
