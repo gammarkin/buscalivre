@@ -11,14 +11,14 @@ const handleOnChange = async (event, setProducts, setLoading) => {
 	setLoading(true);
 
 	if (value === 'Todos') {
-		const products = await axios.get(`http://localhost:3001/products/`);
+		const products = await axios.get(`http://localhost:3001/`);
 
 		setLoading(false);
 		return setProducts(products.data.results);
 	}
 
 	if (value === 'Buscapé' || value === 'Mercado Livre') {
-		const products = await axios.get(`http://localhost:3001/products`);
+		const products = await axios.get(`http://localhost:3001/`);
 
 		const filteredListBySite = products.data.results.filter(
 			(product) => product.from === value
@@ -28,7 +28,7 @@ const handleOnChange = async (event, setProducts, setLoading) => {
 		return setProducts(filteredListBySite);
 	}
 
-	const data = await axios.get(`http://localhost:3001/products/c/${value}`);
+	const data = await axios.get(`http://localhost:3001/c/${value}`);
 
 	setProducts(data.data.results);
 	return setLoading(false);
