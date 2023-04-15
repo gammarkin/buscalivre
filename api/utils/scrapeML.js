@@ -12,9 +12,7 @@ const scrapeML = async (url) => {
             const name = $(element).find('.ui-search-item__title').text();
             const img = $(element).find('img').attr('src');
 
-            const priceFraction = $(element).find('.price-tag-fraction').text();
-            const priceCents = $(element).find('.price-tag-cents');
-            const price = priceCents ? `${priceFraction},${priceCents.text()}` : priceFraction;
+            const price = $(element).find('.price-tag-fraction').text();
 
             return { name, price, img, from: 'Mercado Livre' };
         }).get();
