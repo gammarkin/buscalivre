@@ -12,7 +12,7 @@ function App() {
 
 	useEffect(() => {
 		const getProducts = async () => {
-			const data = await axios.get('http://localhost:3001/');
+			const data = await axios.get('https://buscalivre-api.vercel.app/');
 
 			setProducts(data.data.results);
 			setLoading(false);

@@ -12,7 +12,9 @@ const SearchBar = ({setProducts, setLoading}) => {
 		event.preventDefault();
 
 		setLoading(true);
-		const data = await axios.get(`http://localhost:3001/c/${searchText}`);
+		const data = await axios.get('https://buscalivre-api.vercel.app/c/', {
+			c: searchText,
+		});
 
 		setLoading(false);
 		return setProducts(data.data.results);

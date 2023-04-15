@@ -1,35 +1,29 @@
-import puppeteer from 'puppeteer';
+import cheerio from 'cheerio';
+import axios from 'axios';
 
 export const BSCP_ENDPOINT = (search) => `https://www.buscape.com.br/search?q=${search}`;
 
 const scrapeBuscape = async (url) => {
     try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
 
-        await page.goto(url);
+        const data = $('.SearchCard_ProductCard_Inner__7JhKb').map((i, element) => {
+            const name = $(element).find('.SearchCard_ProductCard_Name__ZaO5o').text();
+            const price = $(element).find('.Text_MobileHeadingS__Zxam2').text();
+            const img = $(element).find('img').attr('src');
 
-        const data = await page.$$eval('.SearchCard_ProductCard_Inner__7JhKb', (elements) => {
-            const items = [];
+            return { name, price, img, from: 'Buscapé' };
+        }).get();
 
-            if (!document.querySelector('.Text_MobileParagraphXs__sLf1r')) {
-                return [];
-            }
-
-            const category = document.querySelector('.Text_MobileParagraphXs__sLf1r').innerText;
-
-            elements.forEach((element) => {
-                const name = element.querySelector('.SearchCard_ProductCard_Name__ZaO5o').innerText;
-                const price = element.querySelector('.Text_MobileHeadingS__Zxam2').innerText;
-                const img = element.querySelector('img').src;
-
-                items.push({ name, price, category, img, from: 'Buscapé' });
+        if ($('.Text_MobileParagraphXs__sLf1r').length) {
+            const category = $('.Text_MobileParagraphXs__sLf1r').first().text();
+            data.forEach(item => {
+                item.category = category;
             });
-
-            return items;
-        });
-
-        await browser.close();
+        } else {
+            return [];
+        }
 
         return data;
     } catch (error) {

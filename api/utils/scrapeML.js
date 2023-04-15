@@ -1,38 +1,35 @@
-import puppeteer from 'puppeteer';
+import cheerio from 'cheerio';
+import axios from 'axios';
 
 export const ML_ENDPOINT = (search) => `https://lista.mercadolivre.com.br/${search}#D[A:${search}]`;
 
 const scrapeML = async (url) => {
     try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
 
-        await page.goto(url);
+        const data = $('.ui-search-layout__item').map((i, element) => {
+            const name = $(element).find('.ui-search-item__title').text();
+            const img = $(element).find('img').attr('src');
 
-        const data = await page.$$eval('.ui-search-layout__item', (elements) => {
-            if (document.querySelector('.ui-search-rescue__info')) {
-                return [];
-            }
+            const priceFraction = $(element).find('.price-tag-fraction').text();
+            const priceCents = $(element).find('.price-tag-cents');
+            const price = priceCents ? `${priceFraction},${priceCents.text()}` : priceFraction;
 
-            const items = [];
-            let category = document.querySelector('.andes-breadcrumb__link');
-            category = category ? category.firstChild.innerText : '';
+            return { name, price, img, from: 'Mercado Livre' };
+        }).get();
 
-            elements.forEach((element) => {
-                const name = element.querySelector('.ui-search-item__title').innerText;
-                const img = element.querySelector('img').src;
+        if ($('.ui-search-rescue__info').length) {
+            return [];
+        }
 
-                const priceFraction = element.querySelector('.price-tag-fraction').innerText;
-                const priceCents = element.querySelector('.price-tag-cents');
-                const price = priceCents ? `${priceFraction},${priceCents.innerText}` : priceFraction;
-
-                items.push({ name, price, category, img, from: 'Mercado Livre' });
-            });
-
-            return items;
+        let category = $('.andes-breadcrumb__link').first().text();
+        if (category === '') {
+            category = $('.andes-breadcrumb__title').first().text();
+        }
+        data.forEach(item => {
+            item.category = category;
         });
-
-        await browser.close();
 
         return data;
     } catch (error) {
